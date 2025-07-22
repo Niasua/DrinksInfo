@@ -9,21 +9,25 @@ namespace DrinksInfo;
 
 public class DrinksService
 {
-    internal void GetCategories()
+    internal List<Category> GetCategories()
     {
         var client = new RestClient("http://www.thecocktaildb.com/api/json/v1/1");
         var request = new RestRequest("list.php?c=list");
         var response = client.ExecuteAsync(request);
+
+        List<Category> categories = new();
 
         if (response.Result.StatusCode == System.Net.HttpStatusCode.OK)
         {
             string rawResponse = response.Result.Content;
             var serialize = JsonConvert.DeserializeObject<Categories>(rawResponse);
 
-            List<Category> returnedList = serialize.Drinks;
-
-            TableVisualisationEngine.ShowTable(returnedList, "Categories Menu");
+            categories = serialize.Drinks;
+            TableVisualisationEngine.ShowTable(categories, "Categories Menu");
+            return categories;
         }
+
+        return categories;
     }
 
     internal void GetDrink(string drink)
@@ -64,11 +68,13 @@ public class DrinksService
         }
     }
 
-    internal void GetDrinksByCategory(string category)
+    internal List<Drink> GetDrinksByCategory(string category)
     {
         var client = new RestClient("http://www.thecocktaildb.com/api/json/v1/1");
         var request = new RestRequest($"filter.php?c={HttpUtility.UrlEncode(category)}");
         var response = client.ExecuteAsync(request);
+
+        List<Drink> drinks = new();
 
         if (response.Result.StatusCode == System.Net.HttpStatusCode.OK)
         {
@@ -76,9 +82,13 @@ public class DrinksService
 
             var serialize = JsonConvert.DeserializeObject<Drinks>(rawResponse);
 
-            List<Drink> returnedList = serialize.DrinksList;
+            drinks = serialize.DrinksList;
 
-            TableVisualisationEngine.ShowTable(returnedList, "Drinks Menu");
+            TableVisualisationEngine.ShowTable(drinks, "Drinks Menu");
+
+            return drinks;
         }
+
+        return drinks;
     }
 }

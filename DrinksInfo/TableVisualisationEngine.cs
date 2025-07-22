@@ -11,12 +11,14 @@ public class TableVisualisationEngine
 
         if (tableName == null)
             tableName = "";
+
         Console.WriteLine("\n\n");
 
         ConsoleTableBuilder
             .From(tableData)
             .WithColumn(tableName)
-            .ExportAndWriteLine();
+            .WithFormat(ConsoleTableBuilderFormat.Alternative)
+            .ExportAndWriteLine(TableAligntment.Center);
         Console.WriteLine("\n\n");
     }
 }
