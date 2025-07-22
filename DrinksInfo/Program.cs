@@ -1,1 +1,4 @@
-﻿UserInput userInput = new();
+﻿using DrinksInfo;
+
+UserInput userInput = new();
+userInput.GetCategoriesInput();
